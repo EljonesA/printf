@@ -1,3 +1,4 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -78,6 +79,103 @@ int _printf(const char *format, ...)
 				{
 					buf[i++] = num % 2 + '0';
 					num /= 2;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
+			}
+			else if (*format == 'u')
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				char buf[32];
+				int i = 0;
+
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					buf[i++] = num % 10 + '0';
+					num /= 10;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
+			}
+			else if (*format == '0')
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				char buf[32];
+				int i = 0;
+
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					buf[i++] = num % 8 + '0';
+					num /= 8;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
+			}
+			else if (*format == 'x')
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				char buf[32];
+				int i = 0;
+
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					int digit = num % 16;
+
+					if (digit < 10)
+					       buf[i++] = digit + '0';
+					else
+						buf[i++] = digit - 10 + 'l';
+					num /= 16;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
+			}
+			else if (*format == 'X')
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				char buf[32];
+				int i = 0;
+
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					int digit = num % 16;
+					if (digit < 10)
+						buf[i++] = digit + '0';
+					else
+						buf[i++] = digit - 10 + 'A';
+					num /= 16;
 				}
 				while (i > 0)
 				{
