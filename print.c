@@ -33,7 +33,35 @@ int _printf(const char *format, ...)
 				char *s = va_arg(args, char *);
 
 				write(1, s, strlen(s));
-				num_chars_printed++;
+				num_chars_printed += strlen(s);
+			}
+			else if (*format == 'd' || *format == 'i')
+			{
+				int num = va_arg(args, int);
+				char buf[32];
+				int i = 0;
+
+				if (num < 0)
+				{
+					write(1, "-", 1);
+					num_chars_printed++;
+					num = -num;
+				}
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					buf[i++] = num % 10 + '0';
+					num /= 10;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
 			}
 			else if (*format == '%')
 			{
