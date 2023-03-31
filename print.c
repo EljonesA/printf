@@ -63,6 +63,28 @@ int _printf(const char *format, ...)
 					num_chars_printed++;
 				}
 			}
+			else if (*format == 'b')
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				char buf[32];
+				int i = 0;
+
+				if (num == 0)
+				{
+					write(1, "0", 1);
+					num_chars_printed++;
+				}
+				while (num > 0)
+				{
+					buf[i++] = num % 2 + '0';
+					num /= 2;
+				}
+				while (i > 0)
+				{
+					write(1, &buf[--i], 1);
+					num_chars_printed++;
+				}
+			}
 			else if (*format == '%')
 			{
 				char c = '%';
